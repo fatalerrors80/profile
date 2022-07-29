@@ -30,6 +30,8 @@
 # 21/06/2022 v2.7.0 : added isipv4 and isipv6, use it in rmhost as an improvement
 # 22/06/2022 v2.7.1 : [bugfix] few minor corrections, added help command
 # 24/06/2022 v2.8.0 : Added backtrace, error and settrace, corrected showinfo
+# 19/07/2022 v2.8.1 : few cleanup, fixes and optimizations
+# 29/07/2022 v2.8.2 : added warning for non bash users
 # ------------------------------------------------------------------------------
 # Copyright (c) 2013-2022 Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
 # Protected by the BSD3 license. Please read bellow for details.
@@ -65,9 +67,15 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-export PROFVERSION="2.8.0"
+export PROFVERSION="2.8.2"
 
 export DEFAULT_CITY="Toulouse"
+
+if [[ ! $(echo $SHELL | grep bash) ]]; then
+    echo "That script is designed to be used with bash as being the shell."
+    echo "Please consider using bash instead, or patch me ;) !"
+    return 1
+fi
 
 # ------------------------------------------------------------------------------
 # path* : private functions for PATH variable management
@@ -229,23 +237,17 @@ isipv4 ()
 	ip=($ip)
 	IFS=$old_ifs
 	if [[ ${ip[0]} -le 255 && ${ip[1]} -le 255 \
-            && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]; then
+		  && ${ip[2]} -le 255 && ${ip[3]} -le 255 ]]; then
 	    if [[ -t 1 ]]; then
 		echo "The given IPv4 is valid."
 	    fi
 	    return 0
-	else
-	    if [[ -t 1 ]]; then
-		echo "The given parameter is NOT a valid IPv4."
-	    fi
-	    return 1
 	fi
-    else
-	if [[ -t 1 ]]; then
-	    echo "The given parameter is NOT a valid IPv4."
-	fi
-	return 1
     fi
+    if [[ -t 1 ]]; then
+	echo "The given parameter is NOT a valid IPv4."
+    fi
+    return 1
 }
 export -f isipv4
 
@@ -261,12 +263,11 @@ isipv6 ()
 	    echo "The given IPv6 is valid."
 	fi
 	return 0
-    else
-	if [[ -t 1 ]]; then
-	    echo "The given parameter is not a valid IPv6."
-	fi
-	return 1
     fi
+    if [[ -t 1 ]]; then
+	echo "The given parameter is not a valid IPv6."
+    fi
+    return 1
 }
 export -f isipv6
 
@@ -482,13 +483,14 @@ export -f mcd
 # Get PID list of the given process name
 # ------------------------------------------------------------------------------
 gpid () {
+    [[ $UID -eq 0 ]] && local psopt="-A"
     [[ $# -eq 1 ]] && local single=1
     for pid in $@; do
-        local result=$(ps -A | grep $pid | awk '{print $1}')
+        local result=$(ps $psopt | grep $pid | awk '{print $1}' | sed "s/\n/ /")
         if [[ $single ]]; then
-            [[ $result ]] && echo "$result"
+            [[ $result ]] && echo "${result//$'\n'/ }"
         else
-            [[ $result ]] && echo "$pid: $result"
+            [[ $result ]] && echo "$pid: ${result//$'\n'/ }"
         fi
     done
     [[ $result ]] || return 1
@@ -505,7 +507,7 @@ rmhost () {
         echo "Usage: rmhost <hostname|ip> [hostname2|ip2 [...]]"
         return 1
     fi
-
+    
     while [[ $1 ]]; do
 	local hst=$1 && shift
 	isipv4 $hst > /dev/null
@@ -599,7 +601,7 @@ rmspc () {
             [[ $verb ]] && echo "-- Leaving directory $(pwd)/$lastdir"
 	    unset lastdir
         )
-
+	
         if [[ $(echo $f | grep " ") ]]; then
             local newf="${f// /${substchar}}"
             local command="mv $mvopt \"$f\" \"$newf\""
@@ -944,11 +946,25 @@ export -f taz
 # ------------------------------------------------------------------------------
 showinfo() {
     echo -e "\n"
-    command -v figlet >/dev/null 2>&1 &&
+    if command -v figlet >/dev/null 2>&1; then 
 	figlet -k $(hostname)
+    else
+	echo "$(hostname -f)"
+    fi
     echo ""
-    command -v neofetch >/dev/null 2>&1 &&
+    if command -v neofetch >/dev/null 2>&1; then
 	neofetch
+    else
+	(
+	    if [[ -s /etc/os-release ]]; then
+		. /etc/os-release
+		echo "$NAME $VERSION"
+	    else
+		cat /proc/version
+	    fi
+	    echo "Uptime: $(uptime)"
+	)
+    fi
 }
 export -f showinfo
 
@@ -990,7 +1006,7 @@ function backtrace ()
 {
     echo "========= Call stack ========="
     typeset -i i=0
-
+    
     local func=
     for func in "${FUNCNAME[@]}"; do
         if [[ $i -ne 0 ]]; then
@@ -1019,6 +1035,9 @@ function error ()
 # ------------------------------------------------------------------------------
 settrace ()
 {
+    local status="off"
+    [[ $(trap -p ERR) ]] && status="on"
+    trap -p ERR
     for opt in $@ ; do
         case $opt in
             "-h"|"--help")
@@ -1033,13 +1052,23 @@ settrace ()
 		echo
 		;;
 	    "--on")
+		if [[ $status == "on" ]]; then
+		    echo "Warning: ERR signal trap is already set, replacing previous trap!"
+		fi
 		trap "error" ERR
 		;;
 	    "--off")
+		if [[ $status != "on" ]]; then
+		    echo "Warning: ERR signal trap is already unset!"
+		fi
 		trap - ERR
+		;;
+	    "--status")
+		echo "ERR trap signal is ${status}."
 		;;
 	esac
     done
+    unset status
 }
 
 
