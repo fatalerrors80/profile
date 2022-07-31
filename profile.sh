@@ -469,7 +469,8 @@ export -f ppg
 # ------------------------------------------------------------------------------
 # Create a directory then goes inside
 # ------------------------------------------------------------------------------
-mcd () {
+mcd ()
+{
     if [[ ! $# -eq 1 ]] ; then
         echo "Create a directory then goes inside."
         echo "Usage: mcd <directory>"
@@ -482,7 +483,8 @@ export -f mcd
 # ------------------------------------------------------------------------------
 # Get PID list of the given process name
 # ------------------------------------------------------------------------------
-gpid () {
+gpid ()
+{
     [[ $UID -eq 0 ]] && local psopt="-A"
     [[ $# -eq 1 ]] && local single=1
     for pid in $@; do
@@ -501,7 +503,8 @@ export -f gpid
 # ------------------------------------------------------------------------------
 # Remove host from know_host (name and IP) for the active user
 # ------------------------------------------------------------------------------
-rmhost () {
+rmhost ()
+{
     if [[ "$#" -lt 1 ]]; then
         echo "Error: incorrect number of parameters."
         echo "Usage: rmhost <hostname|ip> [hostname2|ip2 [...]]"
@@ -545,7 +548,8 @@ export -f rmhost
 # ------------------------------------------------------------------------------
 # Rename all files in current directory to replace spaces with _
 # ------------------------------------------------------------------------------
-rmspc () {
+rmspc ()
+{
     local lst=""
     for opt in $@ ; do
         case $opt in
@@ -944,7 +948,8 @@ export -f taz
 # ------------------------------------------------------------------------------
 # Display system general information
 # ------------------------------------------------------------------------------
-showinfo() {
+showinfo()
+{
     echo -e "\n"
     if command -v figlet >/dev/null 2>&1; then 
 	figlet -k $(hostname)
@@ -1041,7 +1046,7 @@ settrace ()
     for opt in $@ ; do
         case $opt in
             "-h"|"--help")
-		echo "Try to activate bactrace display for script debugging."
+		echo "Try to activate backtrace display for script debugging."
 		echo
 		echo "Options:"
 		echo "	--on	Activate backtrace generation"
