@@ -34,6 +34,7 @@
 # 29/07/2022 v2.8.2 : added warning for non bash users
 # 27/08/2022 v3.0.0 : splitted everything, added rain screensaver
 # 07/11/2022 v3.0.1 : added concatenation to rmspc, added ku, error managed in meteo
+# 08/11/2022 v3.1.0 : added password generator
 # ------------------------------------------------------------------------------
 # Copyright (c) 2013-2022 Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
 # Protected by the BSD3 license. Please read bellow for details.
@@ -69,7 +70,7 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-export PROFVERSION="3.0.1"
+export PROFVERSION="3.1.0"
 
 export DEFAULT_CITY="Toulouse"
 
