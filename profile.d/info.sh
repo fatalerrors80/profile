@@ -17,7 +17,7 @@ meteo ()
     [[ $# -eq 0 ]] && local cities=$DEFAULT_CITY
 
     for city in $cities; do
-        curl https://wttr.in/$city
+        curl https://wttr.in/$city || echo "Failed fetching datas for $city."
     done
 }
 export -f meteo
@@ -30,7 +30,10 @@ showinfo()
 {
     echo -e "\n"
     if command -v figlet >/dev/null 2>&1; then 
-	figlet -k $(hostname)
+	if [[ -s /usr/share/figlet/ansi_shadow.flf ]]; then
+	    local figopt="-f ansi_shadow"
+	fi
+	figlet -k $(hostname) $figopt
     else
 	echo "$(hostname -f)"
     fi

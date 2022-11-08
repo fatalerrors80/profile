@@ -255,7 +255,7 @@ taz ()
                 ;;
 
             "-"[1..9])
-                local complevel=${opt:1:1}
+                local complevel=$(echo $opt | sed 's/-//')
                 ;;
 
             "-"*)

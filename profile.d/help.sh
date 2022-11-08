@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # Display list of commands and general informations
 # ------------------------------------------------------------------------------
-help ()
+help()
 {
     cat <<EOF
 clean		Erase backup files
@@ -9,6 +9,7 @@ dpkgs		Search for the given package in the installed ones
 gpid		Give the list of PIDs for the given process name
 isipv4		Tell if the given IPv4 is valid
 isipv6		Tell if the given IPv6 is valid
+ku		Kill process owned by users in parameter
 mcd		Create a directory and go inside
 meteo		Display curent weather forecast for the configured city
 ppg		Display process matching the given parameter
@@ -25,6 +26,7 @@ taz		Compress smartly the given files or directory
 utaz		Uncompress all zip files in the given (or current) directory
 ver		Display version of your copy of profile
 
+Please use <command> --help to obtain usage details.
 EOF
 }
 export -f help

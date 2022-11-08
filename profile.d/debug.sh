@@ -25,7 +25,7 @@ function error ()
 {
     local errcode=$?
     backtrace
-    exit $errcode
+    return $errcode
 }
 
 
@@ -36,7 +36,7 @@ settrace ()
 {
     local status="off"
     [[ $(trap -p ERR) ]] && status="on"
-    trap -p ERR
+    #trap -p ERR
     for opt in $@ ; do
         case $opt in
             "-h"|"--help")

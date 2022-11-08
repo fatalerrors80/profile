@@ -114,8 +114,11 @@ rmspc ()
                 echo "	-c, --subst-char	Change the replacement character (default is underscore)"
                 echo "	-v, --verbose		Display what is being done"
                 echo "	-s, --shell		Do nothing and display commands that would be executed"
-                echo
-                return 0
+		echo
+		echo "Note: if the --subst-char option is given without parameters, spaces will be"
+		echo "      replaced with nothing (concatenation)."
+		echo
+		return 0
                 ;;
 
             "-r"|"--recursive")
@@ -123,11 +126,15 @@ rmspc ()
                 ;;
 
             "-c"?*|"--subst-char"?*)
-                local substchar=$(echo "$opt" | cut -f 2- -d '=')
-                ;;
+		if [[ $(echo $opt | grep "=") ]]; then
+                    local substchar=$(echo "$opt" | cut -f 2- -d '=')
+		else
+		    local substchar='none'
+		fi
+		;;
 
-            "-v"|"--verbose")
-                local verb=1
+	    "-v"|"--verbose")
+		local verb=1
                 ;;
 
             "-s"|"--shell")
@@ -143,6 +150,7 @@ rmspc ()
     done
 
     [[ ! $substchar ]] && substchar="_"
+    [[ $substchar == "none" ]] && local substchar=""
     [[ $verb ]] && local mvopt="-v"
 
     for f in *; do
