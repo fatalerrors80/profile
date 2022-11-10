@@ -35,6 +35,7 @@
 # 27/08/2022 v3.0.0 : splitted everything, added rain screensaver
 # 07/11/2022 v3.0.1 : added concatenation to rmspc, added ku, error managed in meteo
 # 08/11/2022 v3.1.0 : added password generator
+# 10/11/2022 v3.1.1 : genpwd: test if password is doable
 # ------------------------------------------------------------------------------
 # Copyright (c) 2013-2022 Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
 # Protected by the BSD3 license. Please read bellow for details.
@@ -70,7 +71,7 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-export PROFVERSION="3.1.0"
+export PROFVERSION="3.1.1"
 
 export DEFAULT_CITY="Toulouse"
 

@@ -133,6 +133,13 @@ genpwd()
 		(( rlength++ ))
 	    fi
 
+	    # Check if we have enough car to have something viable
+	    if [[ ${#carset} -lt $length ]]; then
+		echo 'Error: not enought caracters are authorised for the password length.'
+		echo 'Please allow more caracter (preferably) or reduce password lentgh.'
+		return 1
+	    fi
+
 	    for i in $( seq 1 $(( $length - $rlength )) ); do
 		pickcar "$carset"
 	    done
