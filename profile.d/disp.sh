@@ -84,18 +84,22 @@ disp()
     case $1 in
         "I")
             local heads="[ ${IGreen}info${DEFAULTFG} ]"
+            shift
             [[ -z $QUIET || $QUIET -ne 1 ]] && echo -e "${heads} $@"
             ;;
         "W")
             local heads="[ ${IYellow}Warning${DEFAULTFG} ]"
+            shift
             echo -e "${heads} $@" >&2
             ;;
         "E")
             local heads="[ ${IRed}ERROR${DEFAULTFG} ]"
+            shift
             echo -e "${heads} $@" >&2
             ;;
 	"D")
 	    local heads"[ ${ICyan}debug${DEFAULTFG} ]"
+	    shift
 	    [[ -n $DEBUG && $DEBUG -gt 1 ]] && echo -e "${heads} $@"
 	    ;;
         "*")
@@ -105,3 +109,4 @@ disp()
     esac
     unset heads
 }
+export -f disp
