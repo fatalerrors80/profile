@@ -72,7 +72,7 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-export PROFVERSION="3.1.1"
+export PROFVERSION="3.2.0"
 
 export DEFAULT_CITY="Toulouse"
 
