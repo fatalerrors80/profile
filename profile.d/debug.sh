@@ -52,18 +52,18 @@ settrace ()
 		;;
 	    "--on")
 		if [[ $status == "on" ]]; then
-		    echo "Warning: ERR signal trap is already set, replacing previous trap!"
+		    disp W "ERR signal trap is already set, replacing previous trap!"
 		fi
 		trap "error" ERR
 		;;
 	    "--off")
 		if [[ $status != "on" ]]; then
-		    echo "Warning: ERR signal trap is already unset!"
+		    disp W "ERR signal trap is already unset!"
 		fi
 		trap - ERR
 		;;
 	    "--status")
-		echo "ERR trap signal is ${status}."
+		disp "ERR trap signal is ${status}."
 		;;
 	esac
     done

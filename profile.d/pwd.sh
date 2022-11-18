@@ -37,7 +37,7 @@ genpwd()
 		echo "and thus, cannot be used without provoquing errors. Those identified caracters"
 		echo "are :"
 		echo '	* ? \ $ { }'
-		echo 
+		echo
 		return 0
 		;;
 	    "-s"|"--nosymbols")
@@ -58,24 +58,24 @@ genpwd()
 	    "-L"?*|"--length"?*)
 		local length=$(echo "$opt" | cut -f 2- -d '=')
 		if ! [[ $length =~ ^[0-9]+$ ]]; then
-		    echo "The --length parameter requires a number."
+		    disp E "The --length parameter requires a number."
 		    return 1
 		fi
 		;;
 	    "-o"?*|"--occurences"?*)
 		local occurs=$(echo "$opt" | cut -f 2- -d '=')
 		if ! [[ $occurs =~ ^[1-9]+$ ]]; then
-		    echo "The --occurs parameter requires a number from 1 to 9."
+		    disp E "The --occurs parameter requires a number from 1 to 9."
 		    return 1
 		fi
 		;;
 	    "-*")
-		echo "Unknow parameter ${opt}."
+		disp E "Unknow parameter ${opt}."
 		return 1
 		;;
 	    *)
 		if ! [[ $opt =~ ^[1-9]+$ ]]; then
-		    echo "Unknow parameter ${opt}."
+		    disp E "Unknow parameter ${opt}."
 		    return 1
 		else
 		    local nbpwd=$opt
@@ -99,7 +99,7 @@ genpwd()
 	echo "$char"
     }
 
-    echo "Generating $nbpwd passwords, please wait..."
+    disp I "Generating $nbpwd passwords, please wait..."
     for n in $( seq 1 $nbpwd ); do
 	{
 	    local carset='' # store final caracter set to use
@@ -135,8 +135,8 @@ genpwd()
 
 	    # Check if we have enough car to have something viable
 	    if [[ ${#carset} -lt $length ]]; then
-		echo 'Error: not enought caracters are authorised for the password length.'
-		echo 'Please allow more caracter (preferably) or reduce password lentgh.'
+		disp E 'Not enought caracters are authorised for the password length.'
+		disp E 'Please allow more caracter (preferably) or reduce password lentgh.'
 		return 1
 	    fi
 

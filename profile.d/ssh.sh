@@ -4,8 +4,8 @@
 rmhost ()
 {
     if [[ "$#" -lt 1 ]]; then
-        echo "Error: incorrect number of parameters."
-        echo "Usage: rmhost <hostname|ip> [hostname2|ip2 [...]]"
+        disp E "Incorrect number of parameters."
+        disp E "Usage: rmhost <hostname|ip> [hostname2|ip2 [...]]"
         return 1
     fi
     
@@ -25,16 +25,16 @@ rmhost ()
 	if [[ ! $ip && $hst ]]; then
 	    ip=$(host $hst | grep "has address" | awk '{print $NF}')
 	    [[ ! $? ]] &&
-		echo "*** rmhost(): Error extracting IP from hostname." &&
+		disp E "Impossible to extract IP from hostname." &&
 		return 1
 	fi
 	
 	if [[ $hst ]]; then
-	    echo "Removing host $hst from ssh known_host..."
+	    disp I "Removing host $hst from ssh known_host..."
 	    ssh-keygen -R $hst > /dev/null
 	fi
 	if [[ $ip ]]; then
-	    echo "Removing IP $ip from ssh known_host..."
+	    disp I "Removing IP $ip from ssh known_host..."
 	    ssh-keygen -R $ip > /dev/null
 	fi
 	unset hst ip
@@ -60,7 +60,7 @@ ssr ()
     done
 
     [[ ! $1 ]] &&
-        echo "Please specify the server you want to log in." &&
+        disp E "Please specify the server you want to log in." &&
         return 1
 
     local srv=$1 && shift

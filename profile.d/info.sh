@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 ver ()
 {
-    echo "Profile version $PROFVERSION."
+    disp "Profile version $PROFVERSION."
 }
 export -f ver
 
@@ -17,7 +17,7 @@ meteo ()
     [[ $# -eq 0 ]] && local cities=$DEFAULT_CITY
 
     for city in $cities; do
-        curl https://wttr.in/$city || echo "Failed fetching datas for $city."
+        curl https://wttr.in/$city || disp E "Failed fetching datas for $city."
     done
 }
 export -f meteo

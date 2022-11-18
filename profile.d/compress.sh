@@ -33,7 +33,7 @@ utaz()
                 ;;
 
             "-"*)
-                echo "Invalid option, use \"utaz --help\" to display options list"
+                disp E "Invalid option, use \"utaz --help\" to display options list"
                 echo
                 return 1
                 ;;
@@ -45,55 +45,54 @@ utaz()
         esac
     done
 
-    [[ $createdir && $nodir ]] && echo "*** Error: --create-dir and --no-dir options are mutually exclusive."
+    [[ $createdir && $nodir ]] && disp E "The --create-dir and --no-dir options are mutually exclusive."
 
     [[ ! $LIST ]] && local LIST="."
 
     for zitem in $LIST; do
         [[ $(ls $zitem/*.zip 2> /dev/null | wc -l) -eq 0 ]] &&
-            echo "$zitem contains no supported archive file, skipping." &&
+            disp W "$zitem contains no supported archive file, skipping." &&
             continue
 
         for f in $zitem/*.zip; do
-            echo -n "Processing archive $zitem/$f... "
+            disp I "Processing archive $zitem/$f... "
             local dir=${f::-4}
 
             mkdir -p $dir
             [[ $? -gt 0 ]] &&
-                echo "[ filesystem can't create directories, exit ]" &&
+                disp E "The filesystem can't create directories, exit!" &&
                 return 1
 
             unzip -o $f -d $dir > /dev/null 2>&1
             case $? in
                 0)
-                    [[ $willrm ]] && rm -f $f && echo -n "Deleted ! "
+                    [[ $willrm ]] && rm -f $f && disp I "File $zitem/$f deleted."
                     ;;
 
                 1)
-                    echo "No deletion on warnings "
+                    disp W "Compression program returned a warning: deletion canceled."
                     ;;
                 *)
-                    echo "[ zip file corrupted, failed ]"
+                    disp E "The zip file seems corrupted, failed."
                     rm -rf $dir > /dev/null 2>&1
                     continue
                     ;;
             esac
 
             if [[ $createdir ]]; then
-                echo -n "[ subdir created, "
+                disp I "Archive extracted successfully in subdirectory."
             elif [[ $nodir ]]; then
                 mv ./$dir/* ./ && rmdir $dir
-                echo -n "[ No subdir, "
+                disp I "Archive extracted successfully, no subdirectory needed."
             else
                 subdirs=$(find $dir -maxdepth 1 | wc -l)
                 if [[ $subdirs -eq 2 ]]; then
                     mv ./$dir/* ./ && rmdir $dir
-                    echo -n "[ No subdir, "
+                    disp I "Archive extracted successfully, no subdirectory needed."
                 else
-                    echo -n "[ subdir created, "
+                    disp I "Archive extracted successfully in subdirectory."
                 fi
             fi
-            echo " OK ]"
         done
     done
 }
@@ -107,15 +106,15 @@ taz ()
     _doxz()
     {
         command -v xz >/dev/null 2>&1 || {
-            echo -e >&2 "\t*** The program 'xz' is not installed, aborting."
+            disp E "The program 'xz' is not installed, aborting."
             return 127
         }
 
         [[ $4 ]] && local verb='-v'
 
         # Display a warning for this format
-        echo -e "\t! Warning: xz format is not suited for long term archiving."
-        echo -e "\t	      See https://www.nongnu.org/lzip/xz_inadequate.html for details."
+        disp W "xz format is not suited for long term archiving."
+        disp I "See https://www.nongnu.org/lzip/xz_inadequate.html for details."
 
         # Compresse to xz (lzma2) - Deprecated 
         xz $verb --compress --keep -$3 -T $2 $1
@@ -129,14 +128,14 @@ taz ()
 
         command -v plzip >/dev/null 2>&1 || {
             command -v lzip >/dev/null 2>&1 || {
-                echo -e >&2 "\t*** Program 'plzip' or 'lzip' are not installed, aborting."
+                disp E "Program 'plzip' or 'lzip' are not installed, aborting."
                 return 127
             }
             local command=lzip
             local procopt=""
             [[ $2 -gt 1 ]] &&
-                echo -e "\t! Warning: lzip doesn't support multithreading, falling back to 1 thread." &&
-                echo -e "\t* Consitder installing plzip to obtain multithreading abilities."
+                disp W "lzip doesn't support multithreading, falling back to 1 thread." &&
+                disp W "Consitder installing plzip to obtain multithreading abilities."
         }
 
         [[ $4 ]] && local verb="-vv"
@@ -153,14 +152,14 @@ taz ()
 
         command -v pigz >/dev/null 2>&1 || {
             command -v gzip >/dev/null 2>&1 || {
-                echo -e >&2 "\t*** Programs 'pigz' or 'gzip' are not installed, aborting."
+                disp E "Programs 'pigz' or 'gzip' are not installed, aborting."
                 return 127
             }
             local command="gzip --compress"
             local procopt=""
             [[ $2 -gt 1 ]] &&
-                echo -e "\t! Warning: gzip doesn't support multithreading, falling back to 1 thread." &&
-                echo -e "\t* Consitder installing pigz to obtain multithreading abilities."
+                disp W "gzip doesn't support multithreading, falling back to 1 thread." &&
+                disp W "Consitder installing pigz to obtain multithreading abilities."
         }
 
         [[ $4 ]] && local verb="--verbose"
@@ -177,14 +176,14 @@ taz ()
 
         command -v pbzip2 >/dev/null 2>&1 || {
             command -v bzip2 >/dev/null 2>&1 || {
-                echo -e >&2 "\t*** The program 'pbzip2' or 'bzip2' are not installed, aborting."
+                disp E "The program 'pbzip2' or 'bzip2' are not installed, aborting."
                 return 127
             }
             local command=bzip2
             local procopt=""
             [[ $2 -gt 1 ]] &&
-                echo -e "\t! Warning: bzip2 doesn't support multithreading, falling back to 1 thread." &&
-                echo -e "\t* Consitder installing pbzip2 to obtain multithreading abilities."
+                disp W "bzip2 doesn't support multithreading, falling back to 1 thread." &&
+                disp W "Consitder installing pbzip2 to obtain multithreading abilities."
         }
 
         [[ $4 ]] && local verb="-v"
@@ -197,12 +196,12 @@ taz ()
     _dolzo()
     {
         command -v lzop >/dev/null 2>&1 || {
-            echo -e >&2 "\t*** The program 'lzop' is not installed, aborting."
+            disp E "The program 'lzop' is not installed, aborting."
             return 127
         }
 
         [[ $4 ]] && local verb='-v'
-        [[ $2 -gt 1 ]] && echo -e "\t! Warning: lzop doesn't support multithreading, falling back to 1 thread."
+        [[ $2 -gt 1 ]] && disp W "lzop doesn't support multithreading, falling back to 1 thread."
 
         # Compresse au format lzo
         lzop --keep -$3 $1
@@ -223,6 +222,7 @@ taz ()
                 echo "			given, the smalest is kept"
                 echo "	-p, --parallel	Number of threads to use (if allowed by underlying utility)"
                 echo "	-v, --verbose	Display progress where possible"
+                echo "	-q, --quiet	Display less messages (only errors and warnings)"
                 echo "	-1, .., -9	Compression level to use [1=fast/big, 9=slow/small]"
                 echo
                 echo "Supported archive format:"
@@ -254,6 +254,9 @@ taz ()
                 local verbose=1
                 ;;
 
+	    "-q"|"--quiet")
+		QUIET=1
+
             "-"[1..9])
                 local complevel=$(echo $opt | sed 's/-//')
                 ;;
@@ -273,22 +276,23 @@ taz ()
     [[ ! $compform ]] && compform=lz # safe and efficient (unless data are already compressed)
     [[ ! $nproc ]] && nproc=1
     [[ ! $complevel ]] && complevel=6
+    [[ $verbose -gt 1 && $QUIET -gt 1 ]] &&
+	disp E "The --verbose and --quiet options can't be used together."
 
     for item in $LIST; do
         local donetar=0
-        echo "--- Processing $item..."
+        disp I "Processing $item..."
 
         if [[ -d $item ]]; then
-            echo -ne "\t* Creating $item.tar... "
+            disp I "\t Creating $item.tar... "
 
             tar -cf $item{.tar,}
             if [[ ! $? -eq 0 ]]; then
-                echo "[ failed, skipping ]"
+                disp E "tar file creation failed, skipping to next item."
                 continue
             fi
 
             local donetar=1
-            echo "[ OK ]"
         fi
 
         local fname=$item
@@ -296,15 +300,15 @@ taz ()
 
         # Skip compression part if tar is asked
         if [[ $compform != "tar" ]]; then
-            echo -e "\t* Compressing archive..."
+            disp I "\t Compressing archive..."
             _do$compform $fname $nproc $complevel $verbose
             [[ ! $? -eq 0 ]] && case $? in
                 127)
-                    echo -e "\t*** Compression program unavailable, aborting."
+                    disp E "Compression program unavailable, aborting."
                     return 127
                     ;;
                 *)
-                    echo -e "\t*** Compression program returned an error, not deleting anything if asked, skipping to next item."
+                    disp E "Compression program returned an error, not deleting anything if asked, skipping to next item."
                     continue
                     ;;
             esac
@@ -313,12 +317,10 @@ taz ()
         fi
 
         if [[ $willrm ]]; then
-            echo -en "\t* Deleting original source as asked... "
-            rm -r $item && echo '[ OK ]' || echo '[ failed ]'
+            disp I "\t Deleting original source as asked... "
+            rm -r $item
         fi
-
-        echo "--- Done"
     done
-
+    unset QUIET
 }
 export -f taz

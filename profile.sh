@@ -36,6 +36,7 @@
 # 07/11/2022 v3.0.1 : added concatenation to rmspc, added ku, error managed in meteo
 # 08/11/2022 v3.1.0 : added password generator
 # 10/11/2022 v3.1.1 : genpwd: test if password is doable
+# 18/11/2022 v3.2.0 : created disp command for display, make use of it
 # ------------------------------------------------------------------------------
 # Copyright (c) 2013-2022 Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
 # Protected by the BSD3 license. Please read bellow for details.
@@ -76,8 +77,8 @@ export PROFVERSION="3.1.1"
 export DEFAULT_CITY="Toulouse"
 
 if [[ ! $(echo $SHELL | grep bash) ]]; then
-    echo "That script is designed to be used with bash as being the shell."
-    echo "Please consider using bash instead, or patch me ;) !"
+    echo "That environmet script is designed to be used with bash or zsh being the shell."
+    echo "Please consider using bash or zsh instead, or patch me ;)!"
     return 1
 fi
 
@@ -196,7 +197,7 @@ if [[ $INTERACTIVE ]]; then
     # Set default language
     setfr
     showinfo
-    echo "Profile version $PROFVERSION chargé..."
+    disp I "Profile version $PROFVERSION chargé..."
 fi
 
 # Cleanup

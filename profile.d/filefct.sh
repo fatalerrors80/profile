@@ -47,7 +47,7 @@ clean ()
                 ;;
 
             "-"*)
-                echo "Invalid option, use \"clean --help\" to display usage."
+                disp E "Invalid option, use \"clean --help\" to display usage."
                 echo
                 return 1
                 ;;
@@ -86,8 +86,8 @@ export -f clean
 mcd ()
 {
     if [[ ! $# -eq 1 ]] ; then
-        echo "Create a directory then goes inside."
-        echo "Usage: mcd <directory>"
+        disp E "Create a directory then goes inside."
+        disp E "Usage: mcd <directory>"
         return 1
     fi
     mkdir -pv $1 && cd $1
@@ -142,7 +142,7 @@ rmspc ()
                 ;;
 
             *)
-                echo "Invalid parameter, use \"rmspc --help\" to display options list"
+                disp E "Invalid parameter, use \"rmspc --help\" to display options list"
                 echo
                 return 1
                 ;;
@@ -155,12 +155,12 @@ rmspc ()
 
     for f in *; do
         [[ $recurs ]] && [[ -d "$f" ]] && (
-            [[ $verb ]] && echo "-- Entering directory $(pwd)/$f ..."
+            [[ $verb ]] && disp I "Entering directory $(pwd)/$f ..."
 	    local lastdir=$f
             pushd "$f" > /dev/null
             rmspc $@
             popd > /dev/null
-            [[ $verb ]] && echo "-- Leaving directory $(pwd)/$lastdir"
+            [[ $verb ]] && disp I "Leaving directory $(pwd)/$lastdir"
 	    unset lastdir
         )
 	

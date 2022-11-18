@@ -23,18 +23,18 @@ dpkgs ()
                 local pkg=$1 && shift
                 count=$(( $count + 1 ))
                 [[ $count -gt 1 ]] &&
-                    echo "*** Error: Please specify a package name, without space, eventually partial." &&
+                    disp E "Please specify a package name, without space, eventually partial." &&
                     return 1
 
                 ;;
         esac
     done
     [[ $count -lt 1 ]] &&
-        echo "*** Error: Please specify a package name, without space, eventually partial." &&
+        disp E "Please specify a package name, without space, eventually partial." &&
         return 1
 
     [[ -x /usr/sbin/dpkg ]] &&
-        echo "*** Error: dpkg command seems unavialable." &&
+        disp E "dpkg command seems unavialable." &&
         return 2
 
     dpkg -l | grep $pkg
