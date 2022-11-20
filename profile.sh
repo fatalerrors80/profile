@@ -1,43 +1,6 @@
 #!/bin/bash
 # Begin profile
 # ------------------------------------------------------------------------------
-# Initial version from Beyond Linux From Scratch by
-#	* James Robertson <jameswrobertson@earthlink.net>
-#	* Dagmar d'Surreal <rivyqntzne@pbzpnfg.arg>
-# ------------------------------------------------------------------------------
-# Current version from Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
-# 16/02/2013 v1.0.0 : Initial version
-# 24/10/2015 v2.0.0 : Added advanced functionnalities (clean, srr, etc.)
-# 04/02/2017 v2.0.1 : clean improvements (--shell)
-# 16/09/2018 v2.1.0 : Added rmhost, setc, setfr, more locales management
-# 23/09/2019 v2.1.1 : [bugfix] dpkgs
-# 24/09/2019 v2.1.2 : [bugfix] bug in profile version display
-# 16/12/2019 v2.2.0 : Added showinfo, primary write of showdiskmap
-# 08/01/2020 v2.3.0 : Added use of figlet and neofetch as a motd replace
-# 16/01/2020 v2.3.1 : [bugfix] non-interactive were blocked with some functions
-# 31/01/2020 v2.3.2 : Figlet: changed default font to ansi_shadow
-# 02/03/2020 v2.4.0 : Added command auzip
-# 03/03/2020 v2.5.0 : Added command taz and rmspc, auzip => utaz improved
-# 05/03/2020 v2.5.1 : Language consistancy fix, added pigz support in taz
-# 06/03/2020 v2.5.2 : Few aliases sorted out
-# 11/09/2020 v2.5.3 : Few more aliases, improved code consistancy and typo,
-#                   : improved utaz, removed showdiskmap, removed remaining French,
-#                   : added license information for future publication
-# 24/10/2020 v2.6.0 : Added session save and restore for Konsole
-# 25/12/2020 v2.6.1 : Add check on rmhost, improvements rmspc, created expendlist
-# 26/02/2021 v2.6.2 : [bugfix] taz: corrected bug with trailing slash on directories
-# 18/10/2021 v2.6.3 : changed PS1 for status bar style version, few minor improvements
-# 21/06/2022 v2.7.0 : added isipv4 and isipv6, use it in rmhost as an improvement
-# 22/06/2022 v2.7.1 : [bugfix] few minor corrections, added help command
-# 24/06/2022 v2.8.0 : Added backtrace, error and settrace, corrected showinfo
-# 19/07/2022 v2.8.1 : few cleanup, fixes and optimizations
-# 29/07/2022 v2.8.2 : added warning for non bash users
-# 27/08/2022 v3.0.0 : splitted everything, added rain screensaver
-# 07/11/2022 v3.0.1 : added concatenation to rmspc, added ku, error managed in meteo
-# 08/11/2022 v3.1.0 : added password generator
-# 10/11/2022 v3.1.1 : genpwd: test if password is doable
-# 18/11/2022 v3.2.0 : created disp command for display, make use of it
-# ------------------------------------------------------------------------------
 # Copyright (c) 2013-2022 Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
 # Protected by the BSD3 license. Please read bellow for details.
 #
@@ -72,7 +35,7 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-export PROFVERSION="3.2.0"
+export PROFVERSION="3.2.1"
 
 export DEFAULT_CITY="Toulouse"
 

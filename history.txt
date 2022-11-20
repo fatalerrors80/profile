@@ -1,0 +1,118 @@
+------------------------------------------------------------------------------
+Initial version from Beyond Linux From Scratch by
+    * James Robertson <jameswrobertson@earthlink.net>
+    * Dagmar d'Surreal <rivyqntzne@pbzpnfg.arg>
+------------------------------------------------------------------------------
+Current version from Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
+------------------------------------------------------------------------------
+Version history:
+------------------------------------------------------------------------------
+# 20/11/2022 v3.2.1
+	Fix some messages
+	Make dpkgs rpm aware (more to come)
+	Removed version history from main script and revert declaration order
+	Added required license information in all files
+	Completed LICENSE file
+
+# 18/11/2022 v3.2.0
+	Created disp command for display and make use of it
+
+# 10/11/2022 v3.1.1
+	genpwd: test if password is doable
+
+# 08/11/2022 v3.1.0
+	Added password generator
+
+# 07/11/2022 v3.0.1
+	Added concatenation to rmspc
+	Added ku
+	Error managed in meteo
+
+# 27/08/2022 v3.0.0
+	Splitted everything in several files
+	Added rain screensaver
+
+# 29/07/2022 v2.8.2
+	Added warning for non bash or zsh users
+
+# 19/07/2022 v2.8.1
+	Few cleanups, fixes and optimizations
+
+# 24/06/2022 v2.8.0
+	Added backtrace, error and settrace
+	[bugfix] corrected showinfo
+
+# 22/06/2022 v2.7.1
+	[bugfix] few minor corrections
+	Added help command
+
+# 21/06/2022 v2.7.0
+	Added isipv4 and isipv6 and use it in rmhost as an improvement
+	Removed konsole save and restore not working
+
+# 18/10/2021 v2.6.3
+	Changed PS1 for status bar style version
+	Few minor improvements
+
+# 26/02/2021 v2.6.2
+	[bugfix] taz: corrected bug with trailing slash on directories
+
+# 25/12/2020 v2.6.1
+	Add check on rmhost
+	Improvements rmspc
+	Created expendlist
+
+# 24/10/2020 v2.6.0
+	Added session save and restore for Konsole
+
+# 11/09/2020 v2.5.3
+	Few more aliases, improved code consistancy and typo,
+	Improved utaz, removed showdiskmap, removed remaining French,
+	Added license information for future publication
+
+# 06/03/2020 v2.5.2
+	Few aliases sorted out
+
+# 05/03/2020 v2.5.1
+	Language consistancy fix
+	Added pigz support in taz
+
+# 03/03/2020 v2.5.0
+	Added command taz and rmspc
+	Renamed auzip => utaz and improved it
+
+# 02/03/2020 v2.4.0
+	Added command auzip
+
+# 31/01/2020 v2.3.2
+	Figlet: changed default font to ansi_shadow
+
+# 16/01/2020 v2.3.1
+	[bugfix] non-interactive were blocked with some functions
+
+# 08/01/2020 v2.3.0
+	Added use of figlet and neofetch as a motd replace
+
+# 16/12/2019 v2.2.0
+	Added showinfo
+	Primary write of showdiskmap
+
+# 24/09/2019 v2.1.2
+	[bugfix] bug in profile version display
+
+# 23/09/2019 v2.1.1
+	[bugfix] dpkgs
+
+# 16/09/2018 v2.1.0
+	Added rmhost, setc, setfr
+	More locales management
+
+# 04/02/2017 v2.0.1
+	clean improvements (--shell)
+
+# 24/10/2015 v2.0.0
+	Added advanced functionnalities (clean, srr, etc.)
+
+# 16/02/2013 v1.0.0
+	Initial version
+
