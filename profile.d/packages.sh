@@ -70,7 +70,7 @@ dpkgs ()
 
     if [[ $(command -v dpkg >/dev/null 2>&1) ]]; then
 	dpkg -l | grep $pkg
-    elif [[ $(command -v dpkg >/dev/null 2>&1) ]]; then
+    elif [[ $(command -v rpm >/dev/null 2>&1) ]]; then
 	rpm -qa | grep $pkg
     else
 	disp E "No usable package manager seems unavialable."

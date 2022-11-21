@@ -7,6 +7,10 @@ Current version from Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
 ------------------------------------------------------------------------------
 Version history:
 ------------------------------------------------------------------------------
+# 21/11/2022 v3.2.2
+	Fixed taz compression level analysis
+	Fixed typo in dpkgs
+
 # 20/11/2022 v3.2.1
 	Fix some messages
 	Make dpkgs rpm aware (more to come)

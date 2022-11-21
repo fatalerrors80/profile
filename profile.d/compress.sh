@@ -258,7 +258,7 @@ taz ()
                 echo "	-p, --parallel	Number of threads to use (if allowed by underlying utility)"
                 echo "	-v, --verbose	Display progress where possible"
                 echo "	-q, --quiet	Display less messages (only errors and warnings)"
-                echo "	-1, .., -9	Compression level to use [1=fast/big, 9=slow/small]"
+                echo "	-1, .., -9	Compression level to use [1=fast/biggest, 9=slow/smallest]"
                 echo
                 echo "Supported archive format:"
                 echo "	Param.| programs      | Algo. | Description"
@@ -291,15 +291,15 @@ taz ()
 
 	    "-q"|"--quiet")
 		QUIET=1
-
-            "-"[1..9])
-                local complevel=$(echo $opt | sed 's/-//')
-                ;;
+		;;
 
             "-"*)
-                echo "Invalid option, use taz --help to display options list"
-                echo
-                return 1
+		local complevel=$(echo $opt | sed 's/-//')
+		if ! [[ $complevel =~ ^[1-9]+$ ]]; then
+		    disp E "Invalid option, use taz --help to display options list"
+                    echo
+                    return 1
+		fi
                 ;;
 
             *)
