@@ -7,6 +7,9 @@ Current version from Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
 ------------------------------------------------------------------------------
 Version history:
 ------------------------------------------------------------------------------
+# 28/11/2022 v3.2.3
+	Made proper readme file, to improve
+
 # 21/11/2022 v3.2.2
 	Fixed taz compression level analysis
 	Fixed typo in dpkgs
