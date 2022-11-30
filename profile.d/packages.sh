@@ -68,7 +68,7 @@ dpkgs ()
         disp E "Please specify a package name, without space, eventually partial." &&
         return 1
 
-    if [[ $(command -v dpkg >/dev/null 2>&1) ]]; then
+    if [[ $(command -v dpkg >/dev/null 2>&1) ]]; then
 	dpkg -l | grep $pkg
     elif [[ $(command -v rpm >/dev/null 2>&1) ]]; then
 	rpm -qa | grep $pkg
