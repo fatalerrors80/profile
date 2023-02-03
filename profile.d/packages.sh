@@ -36,7 +36,7 @@
 # ------------------------------------------------------------------------------
 # Look for a package within installed one
 # ------------------------------------------------------------------------------
-dpkgs ()
+pkgs ()
 {
     local count=0
     for opt in $@ ; do
@@ -68,13 +68,12 @@ dpkgs ()
         disp E "Please specify a package name, without space, eventually partial." &&
         return 1
 
-    if [[ $(command -v dpkg >/dev/null 2>&1) ]]; then
-	dpkg -l | grep $pkg
-    elif [[ $(command -v rpm >/dev/null 2>&1) ]]; then
-	rpm -qa | grep $pkg
-    else
+    command -v dpkg >/dev/null 2>&1 && local cmd="dpkg -l"
+    command -v rpm >/dev/null 2>&1 && local cmd="rpm -qa"
+    if [[ -z $cmd ]]; then
 	disp E "No usable package manager seems unavialable."
 	return 2
     fi
+    $cmd | grep $pkg
 }
-export -f dpkgs
+export -f pkgs
