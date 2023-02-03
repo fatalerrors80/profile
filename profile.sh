@@ -35,10 +35,6 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-export PROFVERSION="3.2.3"
-
-export DEFAULT_CITY="Toulouse"
-
 if [[ ! $(echo $SHELL | grep bash) ]]; then
     echo "That environmet script is designed to be used with bash or zsh being the shell."
     echo "Please consider using bash or zsh instead, or patch me ;)!"
@@ -83,6 +79,14 @@ pathappend ()
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 
+# Store script's path (realpath -s resolve symlinks if profile.sh is a symlink)
+export MYPATH=$(dirname $(realpath -s $0))
+
+if [[ ! -s $MYPATH/version ]]; then
+    echo "Impossible to determine running version of profile, your installation might be broken."
+fi
+export PROFVERSION=$(cat $MYPATH/version)
+
 # Build PATH environment variable
 if [[ $EUID -eq 0 ]] ; then
     pathappend /sbin:/usr/sbin
@@ -106,16 +110,21 @@ export CFLAGS="-O2 -pipe -march=native"
 export MAKEFLAGS='-j12'
 export PKGSOURCES='/share/src/archives'
 
+# Default city for weather forcast
+export DEFAULT_CITY="Toulouse"
 
 # ------------------------------------------------------------------------------
 # Default values could be altered after this line
 # ------------------------------------------------------------------------------
 
+# Load global configuration
+[[ -f $MYPATH/etc/profile.conf ]] && . ~/.profile.conf
+
 # Load personal configuration
 [[ -f ~/.profile.conf ]] && . ~/.profile.conf
 
-# Execute optionnal config script if any
-for script in ~/profile.d/*.sh ; do
+# Load module scripts
+for script in $MYPATH/profile.d/*.sh ; do
     if [ -r $script ] ; then
         . $script
     fi
