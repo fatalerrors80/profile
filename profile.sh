@@ -82,15 +82,15 @@ pathappend ()
 # Store script's path (realpath -s resolve symlinks if profile.sh is a symlink)
 export MYPATH=$(dirname $(realpath -s $0))
 if [[ ! -e $MYPATH/profile.sh ]]; then
-    disp W "Path detection failed, using pwd..."
+    echo "[ Warning ] Path detection failed, using pwd..."
     MYPATH=$(pwd)
     if [[ ! -e $MYPATH/profile.sh ]]; then
-	disp E "Impossible to determine installation path, pretty much nothing will work."
+	echo "[ Error ] Impossible to determine installation path, pretty much nothing will work."
     fi
 fi
 
 if [[ ! -s $MYPATH/version ]]; then
-    disp W "Impossible to determine running version of profile, your installation might be broken."
+    echo "[ Warning ] Impossible to determine running version of profile, your installation might be broken."
 fi
 export PROFVERSION=$(cat $MYPATH/version)
 
