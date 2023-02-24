@@ -7,6 +7,17 @@ Current version from Geoffray Levasseur <fatalerrors@geoffray-levasseur.org>
 ------------------------------------------------------------------------------
 Version history:
 ------------------------------------------------------------------------------
+
+# 24/02/2022 v3.3.1
+	Fixed version detection
+	Added "busy" function
+	Fixed use of library functions before it's loaded
+
+# 28/11/2022 v3.3.0
+	Initial version update support
+	Changed versioning code
+	Added installation path detection
+
 # 28/11/2022 v3.2.3
 	Made proper readme file, to improve
 
