@@ -80,7 +80,11 @@ pathappend ()
 # ------------------------------------------------------------------------------
 
 # Store script's path (realpath -s resolve symlinks if profile.sh is a symlink)
-export MYPATH=$(dirname $(realpath -s $0))
+if [[ -z $PROFILE_PATH ]]; then
+    export MYPATH=$(dirname $(realpath -s $0))
+else
+    export MYPATH=$PROFILE_PATH
+fi
 if [[ ! -e $MYPATH/profile.sh ]]; then
     echo "[ Warning ] Path detection failed, using pwd..."
     MYPATH=$(pwd)
