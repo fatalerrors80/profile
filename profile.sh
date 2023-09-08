@@ -35,7 +35,7 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-if [[ ! $(echo $SHELL | grep bash) ]]; then
+if [[ ! $(echo $SHELL | grep -e bash|zsh) ]]; then
     echo "That environmet script is designed to be used with bash or zsh being the shell."
     echo "Please consider using bash or zsh instead, or patch me ;)!"
     return 1
@@ -129,14 +129,14 @@ export DEFAULT_CITY="Toulouse"
 # ------------------------------------------------------------------------------
 
 # Load global configuration
-[[ -f $MYPATH/etc/profile.conf ]] && . ~/.profile.conf
+[[ -f $MYPATH/etc/profile.conf ]] && . $MYPATH/etc/profile.conf
 
 # Load personal configuration
 [[ -f ~/.profile.conf ]] && . ~/.profile.conf
 
 # Load module scripts
 for script in $MYPATH/profile.d/*.sh ; do
-    if [ -r $script ] ; then
+    if [[ -r $script ]]; then
         . $script
     fi
 done
