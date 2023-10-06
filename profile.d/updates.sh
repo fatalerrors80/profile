@@ -33,7 +33,7 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-export UPDT_URL="https://git.geoffray-levasseur.org/fatalerrors/profile"
+export UPDT_URL="https://git.geoffray-levasseur.org/fatalerrors/profile/raw/branch/master"
 
 # ------------------------------------------------------------------------------
 # Check for profile updates
@@ -46,8 +46,8 @@ check_updates()
     fi
     disp I "Checking for updates..."
     local vfile="/tmp/version"
-    wget "$UPDT_URL/version" -O $vfile 2&>1 /dev/null || {
-	disp E "Can\'t download version file, impossible to proceed!"
+    wget "$UPDT_URL/version" -O $vfile >/dev/null 2>&1 || {
+	disp E "Can't download version file, impossible to proceed!"
 	return 5
     }
     if [[ -s /tmp/version ]]; then
