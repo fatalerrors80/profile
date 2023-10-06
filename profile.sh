@@ -35,7 +35,7 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-if [[ ! $(echo $SHELL | grep bash) ]]; then
+if [[ ! $SHELL =~ bash|zsh ]]; then
     echo "That environmet script is designed to be used with bash or zsh being the shell."
     echo "Please consider using bash or zsh instead, or patch me ;)!"
     return 1
@@ -80,9 +80,13 @@ pathappend ()
 # ------------------------------------------------------------------------------
 
 # Store script's path (realpath -s resolve symlinks if profile.sh is a symlink)
-export MYPATH=$(dirname $(realpath -s $0))
+if [[ -z $PROFILE_PATH ]]; then
+    export MYPATH=$(dirname $(realpath -s $0))
+else
+    export MYPATH=$PROFILE_PATH
+fi
 if [[ ! -e $MYPATH/profile.sh ]]; then
-    echo "[ Warning ] Path detection failed, using pwd..."
+    echo "[ Warning ] Path detection failed, trying to use pwd..."
     MYPATH=$(pwd)
     if [[ ! -e $MYPATH/profile.sh ]]; then
 	echo "[ Error ] Impossible to determine installation path, pretty much nothing will work."
@@ -101,6 +105,10 @@ fi
 [[ -d /share/services/gestparc ]] && pathappend /share/services/gestparc
 [[ -d ~/bin ]] && pathappend ~/bin
 [[ -d ~/.local/bin ]] && pathappend ~/.local/bin
+
+# ------------------------------------------------------------------------------
+# Default values are set here and will be overloaded with config file if any
+# ------------------------------------------------------------------------------
 
 # Set bash history
 export HISTSIZE=50000
@@ -125,14 +133,14 @@ export DEFAULT_CITY="Toulouse"
 # ------------------------------------------------------------------------------
 
 # Load global configuration
-[[ -f $MYPATH/etc/profile.conf ]] && . ~/.profile.conf
+[[ -f $MYPATH/etc/profile.conf ]] && . $MYPATH/etc/profile.conf
 
 # Load personal configuration
 [[ -f ~/.profile.conf ]] && . ~/.profile.conf
 
 # Load module scripts
 for script in $MYPATH/profile.d/*.sh ; do
-    if [ -r $script ] ; then
+    if [[ -r $script ]]; then
         . $script
     fi
 done
