@@ -35,7 +35,7 @@
 # * OF SUCH DAMAGE.
 # ------------------------------------------------------------------------------
 
-if [[ ! $(echo $SHELL | grep -e bash|zsh) ]]; then
+if [[ ! $SHELL =~ bash|zsh ]]; then
     echo "That environmet script is designed to be used with bash or zsh being the shell."
     echo "Please consider using bash or zsh instead, or patch me ;)!"
     return 1
@@ -86,7 +86,7 @@ else
     export MYPATH=$PROFILE_PATH
 fi
 if [[ ! -e $MYPATH/profile.sh ]]; then
-    echo "[ Warning ] Path detection failed, using pwd..."
+    echo "[ Warning ] Path detection failed, trying to use pwd..."
     MYPATH=$(pwd)
     if [[ ! -e $MYPATH/profile.sh ]]; then
 	echo "[ Error ] Impossible to determine installation path, pretty much nothing will work."
@@ -105,6 +105,10 @@ fi
 [[ -d /share/services/gestparc ]] && pathappend /share/services/gestparc
 [[ -d ~/bin ]] && pathappend ~/bin
 [[ -d ~/.local/bin ]] && pathappend ~/.local/bin
+
+# ------------------------------------------------------------------------------
+# Default values are set here and will be overloaded with config file if any
+# ------------------------------------------------------------------------------
 
 # Set bash history
 export HISTSIZE=50000
